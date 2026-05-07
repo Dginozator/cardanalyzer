@@ -1,0 +1,9 @@
+services:
+  cardanalyser:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cardanalyser
+    ports:
+      - "8000:8000"
+    restart: unless-stopped

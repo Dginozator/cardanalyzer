@@ -18,6 +18,14 @@ uvicorn app.main:app --reload
 
 Открыть `http://127.0.0.1:8000`.
 
+## Запуск через Docker Compose
+
+```bash
+docker compose up --build
+```
+
+Открыть `http://127.0.0.1:8000`.
+
 ## Ограничения MVP
 
 - Извлечение `structural`/`semantic` пока заглушки (placeholder), но формат спецификации соблюдается.
