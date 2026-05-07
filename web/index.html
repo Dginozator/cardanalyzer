@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Card Analyser</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 24px; max-width: 960px; }
+      .dropzone {
+        border: 2px dashed #999;
+        border-radius: 12px;
+        padding: 24px;
+        text-align: center;
+        color: #333;
+        margin-bottom: 16px;
+      }
+      .dropzone.active { border-color: #3066ff; background: #f2f6ff; }
+      .row { margin-bottom: 10px; }
+      label { display: inline-block; width: 120px; }
+      input, select, button { padding: 8px; }
+      button { cursor: pointer; }
+      pre {
+        background: #111;
+        color: #0f0;
+        padding: 12px;
+        border-radius: 8px;
+        overflow: auto;
+        max-height: 420px;
+      }
+      img { max-width: 300px; border-radius: 8px; }
+    </style>
+  </head>
+  <body>
+    <h1>Card Analyser</h1>
+    <p>Вставьте карточку товара через <b>Ctrl+V</b>, затем отправьте на обработку.</p>
+
+    <div id="dropzone" class="dropzone">
+      Нажмите сюда и вставьте изображение (Ctrl+V) или выберите файл ниже.
+    </div>
+
+    <div class="row">
+      <label for="fileInput">Файл:</label>
+      <input id="fileInput" type="file" accept="image/*" />
+    </div>
+    <div class="row">
+      <label for="marketplace">Площадка:</label>
+      <select id="marketplace">
+        <option value="other">other</option>
+        <option value="ozon">ozon</option>
+        <option value="wildberries">wildberries</option>
+        <option value="yandex_market">yandex_market</option>
+        <option value="avito">avito</option>
+      </select>
+    </div>
+    <div class="row">
+      <label for="sourceUrl">Source URL:</label>
+      <input id="sourceUrl" type="text" placeholder="https://..." style="width: 60%;" />
+    </div>
+    <div class="row">
+      <button id="analyzeBtn">Отправить на обработку</button>
+    </div>
+
+    <h3>Нормализованное изображение (900x1200)</h3>
+    <img id="preview" alt="preview" />
+
+    <h3>Ответ (spec)</h3>
+    <pre id="result">{}</pre>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
