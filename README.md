@@ -26,6 +26,32 @@ docker compose up --build
 
 Открыть `http://127.0.0.1:8047`.
 
+Для ускорения повторных сборок включите BuildKit (используется cache pip-слоя в `Dockerfile`):
+
+```bash
+set DOCKER_BUILDKIT=1
+docker compose build
+```
+
+## Prebuilt base-image (быстрый деплой без кэша)
+
+1) Соберите базовый образ с тяжелыми зависимостями один раз:
+
+```bash
+set DOCKER_BUILDKIT=1
+docker build -f Dockerfile.base -t cardanalyser-base:py311 .
+```
+
+2) Используйте его для сборки приложения без переустановки зависимостей:
+
+```bash
+set BASE_IMAGE=cardanalyser-base:py311
+set INSTALL_DEPS=0
+docker compose up --build
+```
+
+Для облака: запушьте `cardanalyser-base:py311` в registry и укажите полный тег в `BASE_IMAGE`.
+
 ## API форматы ответа
 
 - `POST /api/analyze` — JSON-ответ с полями `spec` и `spec_yaml`.
