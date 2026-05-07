@@ -16,7 +16,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-Открыть `http://127.0.0.1:8000`.
+Открыть `http://127.0.0.1:8047`.
 
 ## Запуск через Docker Compose
 
@@ -24,7 +24,7 @@ uvicorn app.main:app --reload
 docker compose up --build
 ```
 
-Открыть `http://127.0.0.1:8000`.
+Открыть `http://127.0.0.1:8047`.
 
 ## Ограничения MVP
 
