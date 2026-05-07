@@ -28,7 +28,7 @@ fileInput.addEventListener("change", (e) => {
 dropzone.addEventListener("click", () => dropzone.focus());
 dropzone.setAttribute("tabindex", "0");
 
-dropzone.addEventListener("paste", (event) => {
+function handleImagePaste(event) {
   const items = event.clipboardData?.items || [];
   for (const item of items) {
     if (item.type.startsWith("image/")) {
@@ -40,7 +40,10 @@ dropzone.addEventListener("paste", (event) => {
       }
     }
   }
-});
+}
+
+dropzone.addEventListener("paste", handleImagePaste);
+document.addEventListener("paste", handleImagePaste);
 
 async function copySpecToClipboard() {
   const payload = resultEl.textContent.trim();
