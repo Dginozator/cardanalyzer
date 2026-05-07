@@ -133,8 +133,12 @@ def extract_palette(image: Image.Image) -> Dict[str, Any]:
     accents_clusters = _accents_far_from_dominant(accent_candidates, dominant_clusters)
 
     dominant_hex = [_lab_to_hex(c["center"]) for c in dominant_clusters]
-    while len(dominant_hex) < 3:
-        dominant_hex.append("#808080")
+    if not dominant_hex:
+        dominant_hex = ["#808080", "#808080", "#808080"]
+    else:
+        # Keep dominant slots representative of detected palette; do not inject gray fallback.
+        while len(dominant_hex) < 3:
+            dominant_hex.append(dominant_hex[-1])
     accents_hex = [_lab_to_hex(c["center"]) for c in accents_clusters]
 
     return {"dominant": dominant_hex, "accents": accents_hex}
