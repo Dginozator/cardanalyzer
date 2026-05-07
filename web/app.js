@@ -1,4 +1,5 @@
 let selectedFile = null;
+let isProcessing = false;
 
 const dropzone = document.getElementById("dropzone");
 const fileInput = document.getElementById("fileInput");
@@ -10,14 +11,17 @@ const sourceUrlEl = document.getElementById("sourceUrl");
 const copySpecBtn = document.getElementById("copySpecBtn");
 const copyStatusEl = document.getElementById("copyStatus");
 
-function setFile(file) {
+function setFile(file, autoAnalyze = false) {
   selectedFile = file;
   dropzone.textContent = `Выбрано: ${file.name} (${Math.round(file.size / 1024)} KB)`;
+  if (autoAnalyze) {
+    analyzeSelectedFile();
+  }
 }
 
 fileInput.addEventListener("change", (e) => {
   if (e.target.files && e.target.files.length > 0) {
-    setFile(e.target.files[0]);
+    setFile(e.target.files[0], true);
   }
 });
 
@@ -30,7 +34,7 @@ dropzone.addEventListener("paste", (event) => {
     if (item.type.startsWith("image/")) {
       const file = item.getAsFile();
       if (file) {
-        setFile(file);
+        setFile(file, true);
         event.preventDefault();
         return;
       }
@@ -54,12 +58,18 @@ async function copySpecToClipboard() {
 
 copySpecBtn.addEventListener("click", copySpecToClipboard);
 
-analyzeBtn.addEventListener("click", async () => {
+async function analyzeSelectedFile() {
+  if (isProcessing) {
+    return;
+  }
   if (!selectedFile) {
     alert("Сначала вставьте или выберите изображение.");
     return;
   }
 
+  isProcessing = true;
+  analyzeBtn.disabled = true;
+  analyzeBtn.textContent = "Обработка...";
   resultEl.textContent = "Обработка...";
 
   const formData = new FormData();
@@ -77,10 +87,16 @@ analyzeBtn.addEventListener("click", async () => {
       throw new Error(data.detail || "API error");
     }
     previewEl.src = data.normalized.preview_data_url;
-    resultEl.textContent = JSON.stringify(data, null, 2);
+    resultEl.textContent = data.spec_yaml || JSON.stringify(data.spec || data, null, 2);
     copyStatusEl.textContent = "";
   } catch (error) {
     resultEl.textContent = JSON.stringify({ ok: false, error: String(error) }, null, 2);
     copyStatusEl.textContent = "";
+  } finally {
+    isProcessing = false;
+    analyzeBtn.disabled = false;
+    analyzeBtn.textContent = "Отправить на обработку";
   }
-});
+}
+
+analyzeBtn.addEventListener("click", analyzeSelectedFile);

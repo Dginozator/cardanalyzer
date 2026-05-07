@@ -26,6 +26,11 @@ docker compose up --build
 
 Открыть `http://127.0.0.1:8047`.
 
+## API форматы ответа
+
+- `POST /api/analyze` — JSON-ответ с полями `spec` и `spec_yaml`.
+- `POST /api/analyze.yaml` — чистый YAML (`Content-Type: application/x-yaml`).
+
 ## Ограничения MVP
 
 - Извлечение `structural`/`semantic` пока заглушки (placeholder), но формат спецификации соблюдается.
