@@ -7,6 +7,8 @@ const resultEl = document.getElementById("result");
 const previewEl = document.getElementById("preview");
 const marketplaceEl = document.getElementById("marketplace");
 const sourceUrlEl = document.getElementById("sourceUrl");
+const copySpecBtn = document.getElementById("copySpecBtn");
+const copyStatusEl = document.getElementById("copyStatus");
 
 function setFile(file) {
   selectedFile = file;
@@ -36,6 +38,22 @@ dropzone.addEventListener("paste", (event) => {
   }
 });
 
+async function copySpecToClipboard() {
+  const payload = resultEl.textContent.trim();
+  if (!payload || payload === "{}" || payload === "Обработка...") {
+    copyStatusEl.textContent = "Пока нечего копировать.";
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(payload);
+    copyStatusEl.textContent = "Схема скопирована в буфер обмена.";
+  } catch (_error) {
+    copyStatusEl.textContent = "Не удалось скопировать. Проверьте доступ к буферу.";
+  }
+}
+
+copySpecBtn.addEventListener("click", copySpecToClipboard);
+
 analyzeBtn.addEventListener("click", async () => {
   if (!selectedFile) {
     alert("Сначала вставьте или выберите изображение.");
@@ -60,7 +78,9 @@ analyzeBtn.addEventListener("click", async () => {
     }
     previewEl.src = data.normalized.preview_data_url;
     resultEl.textContent = JSON.stringify(data, null, 2);
+    copyStatusEl.textContent = "";
   } catch (error) {
     resultEl.textContent = JSON.stringify({ ok: false, error: String(error) }, null, 2);
+    copyStatusEl.textContent = "";
   }
 });

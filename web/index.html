@@ -28,6 +28,28 @@
         max-height: 420px;
       }
       img { max-width: 300px; border-radius: 8px; }
+      .spec-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .icon-btn {
+        border: 1px solid #bbb;
+        background: #fff;
+        border-radius: 8px;
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        line-height: 1;
+      }
+      .copy-status {
+        color: #2e7d32;
+        font-size: 14px;
+        min-height: 20px;
+      }
     </style>
   </head>
   <body>
@@ -63,7 +85,11 @@
     <h3>Нормализованное изображение (900x1200)</h3>
     <img id="preview" alt="preview" />
 
-    <h3>Ответ (spec)</h3>
+    <div class="spec-header">
+      <h3>Ответ (spec)</h3>
+      <button id="copySpecBtn" class="icon-btn" title="Копировать схему" aria-label="Копировать схему">📋</button>
+    </div>
+    <div id="copyStatus" class="copy-status"></div>
     <pre id="result">{}</pre>
 
     <script src="/app.js"></script>
